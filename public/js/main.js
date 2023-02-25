@@ -4,13 +4,12 @@ $.ajaxSetup({
     }
 });
 
-
-$(document).ready(function () {
-
-}).on('change', '.tabCheckbox', function () {
+$(document).on('change', '.tabCheckbox', function () {
     let elm = $(this),
         action = elm.val(),
         url = elm.data('url');
+
+    elm.closest('.tab-item').addClass('active').siblings().removeClass('active');
 
     loadContent(url, action);
 });
@@ -24,9 +23,9 @@ function loadContent(url, action) {
             action: action
         },
     }).done( response => {
-        $('#content').html(response)
+        $('#content').html(response);
         history.pushState(null, null, url);
     }).fail(function (response) {
 
-    })
+    });
 }

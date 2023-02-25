@@ -44,8 +44,11 @@ body{
     display: none;
 }
 
-#tabs label {
-    display: inline-block;
+#tabs .tab-items {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+}
+#tabs .tab-item {
     margin: 0 0 -1px;
     padding: 15px 25px;
     font-weight: 600;
@@ -54,19 +57,19 @@ body{
     border: 1px solid transparent;
 }
 
-#tabs label:before {
+#tabs .tab-item label:before {
     font-weight: normal;
     margin-right: 10px;
 }
 
 
 
-#tabs label:hover {
+#tabs .tab-item label:hover {
     color: #888;
     cursor: pointer;
 }
 
-#tabs input:checked + label {
+#tabs .tab-item.active {
     color: #555;
     border: 1px solid #ddd;
     border-top: 2px solid orange;
