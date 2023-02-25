@@ -19,21 +19,21 @@ class UsersTableSeeder extends Seeder
         $users = [
             [
                 'name' => 'Test User 1',
-                'user_name' => 'testuser1',
+                'username' => 'testuser1',
                 'password' => Hash::make('A4xurzLV')
             ],
             [
                 'name' => 'Test User 2',
-                'user_name' => 'testuser2',
+                'username' => 'testuser2',
                 'password' => Hash::make('GXWgxH8S')
             ],
             [
                 'name' => 'Test User 3',
-                'user_name' => 'testuser3',
+                'username' => 'testuser3',
                 'password' => Hash::make('fpg71XYF')
             ]
         ];
 
-        User::upsert($users,['name', 'user_name', 'password']);
+        User::upsert($users,['name', 'username', 'password']);
     }
 }
