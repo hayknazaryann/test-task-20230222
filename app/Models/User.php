@@ -50,4 +50,9 @@ class User extends Authenticatable
         }
         return false;
     }
+
+    public function jsonData()
+    {
+        return $this->hasMany(JsonData::class);
+    }
 }

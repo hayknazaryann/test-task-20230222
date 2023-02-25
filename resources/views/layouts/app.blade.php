@@ -17,7 +17,8 @@
     <!-- Jquery -->
     <script src="{{ asset('vendor/jquery/jquery.min.js') }}" type="text/javascript"></script>
 
-
+    <!-- Scripts -->
+    <script src="{{ asset('js/main.js') }}" type="text/javascript"></script>
 <body>
     <main role="main">
         @yield('content')

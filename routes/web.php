@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\JsonDataController;
-use App\Http\Controllers\WebsiteController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -17,3 +17,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Auth::routes();
+
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('', [JsonDataController::class, 'index'])->name('json.index');
+    Route::any('create', [JsonDataController::class, 'create'])->name('json.create');
+    Route::any('update', [JsonDataController::class, 'edit'])->name('json.edit');
+    Route::delete('delete/{code}', [JsonDataController::class, 'destroy'])->name('json.destroy');
+
+    Route::get('work-plan', [HomeController::class, 'workPlan']);
+});
