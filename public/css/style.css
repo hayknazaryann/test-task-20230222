@@ -1,0 +1,16 @@
+body{
+    background: #383a3d;
+}
+
+.login-row {
+    align-items: center;
+}
+
+.login-card {
+    background: #fff;
+    border-radius: 8px;
+}
+
+.login-card form{
+    padding: 30px;
+}

@@ -9,17 +9,18 @@
 
     <!-- Bootstrap core CSS -->
     <link href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+
+    <!-- Styles -->
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+
+    <!-- Jquery -->
+    <script src="{{ asset('vendor/jquery/jquery.min.js') }}" type="text/javascript"></script>
 
 
-    <link href="{!! url('assets/css/dashboard.css') !!}" rel="stylesheet">
 <body>
-    @include('layouts.partials.header')
     <main role="main">
-        <div class="container-fluid">
-            <div class="row justify-content-center">
-                @yield('content')
-            </div>
-        </div>
+        @yield('content')
     </main>
 </body>
 </html>
