@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\JsonDataController;
+use App\Http\Controllers\WebsiteController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,25 +16,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('work-plan', function () {
-    $tasks = [
-        [
-            'task' => 'Настройка окружения',
-            'estimate' => '1 час',
-            'logged' => '30 минут',
-            'comments' => ''
-        ],
-        [
-            'task' => 'Установка фреймворка',
-            'estimate' => '1 час',
-            'logged' => '30 минут',
-            'comments' => ''
-        ]
-    ];
-    return view('work-plan', compact('tasks'));
-
-});
+Auth::routes();
