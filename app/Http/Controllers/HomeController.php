@@ -6,6 +6,16 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
+
+    public function profile()
+    {
+        $view = view('profile')->render();
+        if (\request()->ajax()) {
+            return $view;
+        }
+        return view('json.index', compact('view'));
+    }
+
     public function workPlan()
     {
         $tasks = [
@@ -42,9 +52,15 @@ class HomeController extends Controller
             [
                 'task' => 'CRUD',
                 'estimate' => '3 часа',
-                'logged' => '3 часа',
+                'logged' => '3 часа 40 минут',
                 'comments' => 'Основная страница, форма для создания и обновления'
-            ]
+            ],
+            [
+                'task' => 'CRUD',
+                'estimate' => '10 часа',
+                'logged' => '11 часа',
+                'comments' => 'Создание, обновление, просмотр, все данные, удаление'
+            ],
         ];
         return view('work-plan', compact('tasks'));
     }

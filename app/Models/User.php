@@ -43,9 +43,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function tokenExpired()
+    public function tokenExpired($token)
     {
-        if (Carbon::parse($this->attributes['expires_at']) < Carbon::now()) {
+        $token = $this->tokens()->where(['token' => $token])->first();
+        if (Carbon::parse($token->expires_at) < Carbon::now()) {
             return true;
         }
         return false;

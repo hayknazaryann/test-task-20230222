@@ -3,11 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Enums\Actions;
+use App\Models\JsonData;
 use App\Models\User;
+use App\Repositories\Interfaces\JsonDataRepositoryInterface;
 use Illuminate\Http\Request;
 
 class JsonDataController extends Controller
 {
+
+    private $jsonDataRepository;
+
+    public function __construct(JsonDataRepositoryInterface $jsonDataRepository)
+    {
+        $this->jsonDataRepository = $jsonDataRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,8 +25,7 @@ class JsonDataController extends Controller
      */
     public function index()
     {
-        $user = User::find(auth()->id());
-        $jsonData = $user->jsonData()->get();
+        $jsonData = $this->jsonDataRepository->allJsonData();
         $view = view('json.table', compact('jsonData'))->render();
         if (\request()->ajax()) {
             return $view;
@@ -26,15 +35,28 @@ class JsonDataController extends Controller
 
     /**
      * Display a create form of the resource.
-     *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         $action = Actions::CREATE;
         $view = view('json.form', compact('action'));
-        if (\request()->ajax()) {
-            return $view->render();
+        if ($request->ajax()) {
+            if ($request->loadContent) {
+                return $view->render();
+            }
+            $token = \request()->header('USER-TOKEN');
+            if (!$token) {
+                return response()->json(['success' => false, 'message' => 'Token required'], 400);
+            }
+
+            if(!current_user()->tokenExpired($token)) {
+                $this->jsonDataRepository->storeJsonData(['data' => json_decode($request->data, true), 'code' => generate_code()]);
+                return response()->json(['success' => true, 'message' => 'Data successfully created'], 200);
+            }
+
+            return response()->json(['success' => false, 'message' => 'Token expired'], 401);
         }
         return view('json.index', compact('view'));
     }
@@ -42,30 +64,27 @@ class JsonDataController extends Controller
 
     /**
      * Display a edit form of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function edit()
-    {
-        $action = Actions::EDIT;
-        $view = view('json.form', compact('action'));
-        if (\request()->ajax()) {
-            return $view->render();
-        }
-        return view('json.index', compact('view'));
-    }
-
-
-
-    /**
-     * Store a newly created resource in storage.
-     *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function update(Request $request)
     {
-        //
+        $action = Actions::UPDATE;
+        $view = view('json.form', compact('action'));
+        if ($request->ajax()) {
+            if ($request->loadContent) {
+                return $view->render();
+            }
+            $token = \request()->header('USER-TOKEN');
+            if (!$token) {
+                return response()->json(['success' => false, 'message' => 'Token required'], 400);
+            }
+            if(!current_user()->tokenExpired($token)) {
+                $this->jsonDataRepository->updateJsonData(['data' => json_decode($request->data, true)], $request->code);
+                return response()->json(['success' => true, 'message' => 'Data successfully created'], 200);
+            }
+        }
+        return view('json.index', compact('view'));
     }
 
     /**
@@ -74,22 +93,22 @@ class JsonDataController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($code)
     {
-        //
-    }
+        $jsonData = JsonData::where(['code' => $code])->first();
+        $view = view('json.show', compact('jsonData'));
+        if (\request()->ajax()) {
+            if (!$jsonData) {
+                return response()->json(['success' => false, 'message' => 'Data not found'], 404);
+            }
+            return $view->render();
+        }
 
+        if (!$jsonData) {
+            return redirect()->route('json.index')->with('error', 'Data not found');
+        }
+        return view('json.index', compact('view'));
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
     }
 
     /**
@@ -98,8 +117,13 @@ class JsonDataController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($code)
     {
-        //
+        $jsonData = JsonData::where(['code' => $code])->first();
+        if (!$jsonData) {
+            return response()->json(['success' => false, 'Data not found']);
+        }
+        $this->jsonDataRepository->destroyJsonData($jsonData->code);
+        return redirect()->back()->with('success', 'Data deleted successfully');
     }
 }

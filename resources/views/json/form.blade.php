@@ -15,7 +15,7 @@
                 <label for="method">Method</label>
             </div>
 
-            @if($action == \App\Enums\Actions::EDIT)
+            @if($action == \App\Enums\Actions::UPDATE)
                 <div class="form-row-item form-floating">
                     <input type="text" class="form-control" name="code" id="code" placeholder="Code">
                     <label for="code">Code</label>
@@ -23,11 +23,11 @@
             @endif
 
             <div class="form-row-item form-floating">
-                <textarea name="json" class="form-control" id="json" cols="30" rows="8" placeholder="JSON"></textarea>
-                <label for="token">JSON</label>
+                <textarea name="data" class="form-control" id="data" rows="20" placeholder="Data"></textarea>
+                <label for="data">Data</label>
             </div>
             <div class="form-row-item">
-                <button type="button" class="btn btn-outline-primary text-uppercase">
+                <button type="button" id="save" class="btn btn-outline-primary text-uppercase">
                     {{ $action }}
                 </button>
             </div>

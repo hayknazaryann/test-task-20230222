@@ -16,6 +16,6 @@ class JsonData extends Model
     protected $casts = [
         'user_id' => 'integer',
         'code' => 'string',
-        'data' => 'object',
+        'data' => 'array',
     ];
 }

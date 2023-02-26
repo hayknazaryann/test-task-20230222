@@ -2,6 +2,10 @@ body{
     background: #383a3d;
 }
 
+table td {
+    vertical-align: middle;
+}
+
 .login-row {
     align-items: center;
 }
@@ -27,7 +31,6 @@ body{
 }
 
 #tabs .tabs-content {
-    min-width: 320px;
     max-width: 800px;
     min-height: 650px;
     padding: 50px;
@@ -46,7 +49,7 @@ body{
 
 #tabs .tab-items {
     display: grid;
-    grid-template-columns: repeat(4,1fr);
+    grid-template-columns: repeat(5,1fr);
 }
 #tabs .tab-item {
     margin: 0 0 -1px;
@@ -80,20 +83,28 @@ body{
     display: grid;
     gap: 20px
 }
-
-@media screen and (max-width: 650px) {
-    /*#tabs label {*/
-        /*font-size: 0;*/
-    /*}*/
-
-    /*#tabs label:before {*/
-        /*margin: 0;*/
-        /*font-size: 18px;*/
-    /*}*/
+.data-tree li {
+    list-style: none;
+}
+.data-tree .items {
+    cursor: pointer;
+}
+.data-tree a {
+    text-decoration: none;
+}
+.hide {
+    display: none;
+}
+.show {
+    display: block;
+}
+.profile .name {
+    font-size: 22px;
+    font-weight: bold
 }
 
-@media screen and (max-width: 400px) {
-    #tabs label {
-        padding: 15px;
-    }
+.profile .username {
+    font-size: 14px;
+    font-weight: 600;
 }
+

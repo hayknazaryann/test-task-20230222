@@ -20,9 +20,11 @@ Auth::routes();
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('', [JsonDataController::class, 'index'])->name('json.index');
-    Route::any('create', [JsonDataController::class, 'create'])->name('json.create');
-    Route::any('update', [JsonDataController::class, 'edit'])->name('json.edit');
+    Route::match(['GET', 'POST'],'create', [JsonDataController::class, 'create'])->name('json.create');
+    Route::match(['GET', 'POST'],'update', [JsonDataController::class, 'update'])->name('json.update');
+    Route::get('show/{code}', [JsonDataController::class, 'show'])->name('json.show');
     Route::delete('delete/{code}', [JsonDataController::class, 'destroy'])->name('json.destroy');
 
+    Route::get('profile', [HomeController::class, 'profile'])->name('profile');
     Route::get('work-plan', [HomeController::class, 'workPlan']);
 });
