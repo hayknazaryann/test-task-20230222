@@ -61,6 +61,12 @@ class HomeController extends Controller
                 'logged' => '11 часа',
                 'comments' => 'Создание, обновление, просмотр, все данные, удаление'
             ],
+            [
+                'task' => 'Unit тесты',
+                'estimate' => '2 часа',
+                'logged' => '4 часа',
+                'comments' => 'В первый раз пишу'
+            ],
         ];
         return view('work-plan', compact('tasks'));
     }
