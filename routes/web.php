@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Auth::routes();
+Auth::routes(['register' => false, 'reset' => false]);
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('', [JsonDataController::class, 'index'])->name('json.index');
@@ -24,6 +24,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::match(['GET', 'POST'],'json/update', [JsonDataController::class, 'update'])->name('json.update');
     Route::get('json/show/{code}', [JsonDataController::class, 'show'])->name('json.show');
     Route::delete('json/delete/{code}', [JsonDataController::class, 'destroy'])->name('json.destroy');
+    Route::get('logs', [JsonDataController::class, 'logs'])->name('json.logs');
 
     Route::get('profile', [HomeController::class, 'profile'])->name('profile');
     Route::get('work-plan', [HomeController::class, 'workPlan']);

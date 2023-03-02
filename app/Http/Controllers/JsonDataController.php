@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Enums\Actions;
+use App\Models\ActivityLog;
 use App\Models\JsonData;
-use App\Models\User;
 use App\Repositories\Interfaces\JsonDataRepositoryInterface;
 use Illuminate\Http\Request;
 
@@ -81,7 +81,7 @@ class JsonDataController extends Controller
             }
             if(!current_user()->tokenExpired($token)) {
                 $this->jsonDataRepository->updateJsonData(['data' => json_decode($request->data, true)], $request->code);
-                return response()->json(['success' => true, 'message' => 'Data successfully created'], 200);
+                return response()->json(['success' => true, 'message' => 'Data successfully updated'], 200);
             }
         }
         return view('json.index', compact('view'));
@@ -90,7 +90,7 @@ class JsonDataController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  string  $code
      * @return \Illuminate\Http\Response
      */
     public function show($code)
@@ -114,7 +114,7 @@ class JsonDataController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  string  $code
      * @return \Illuminate\Http\Response
      */
     public function destroy($code)
@@ -125,5 +125,16 @@ class JsonDataController extends Controller
         }
         $this->jsonDataRepository->destroyJsonData($jsonData->code);
         return redirect()->back()->with('success', 'Data deleted successfully');
+    }
+
+    public function logs()
+    {
+        $logs = current_user()->activityLog()->paginate(10);
+        $view = view('logs.table', compact('logs'))->render();
+        if (\request()->ajax()) {
+            return $view;
+        }
+        return view('json.index', compact('view'));
+
     }
 }

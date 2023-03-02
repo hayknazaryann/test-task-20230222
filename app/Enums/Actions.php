@@ -9,5 +9,6 @@ class Actions
     public const UPDATE = 'update';
     public const SHOW = 'show';
     public const PROFILE = 'profile';
+    public const LOGS = 'logs';
 
 }

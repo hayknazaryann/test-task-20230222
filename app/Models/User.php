@@ -56,4 +56,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(JsonData::class);
     }
+
+    public function activityLog()
+    {
+        return $this->hasMany(ActivityLog::class, 'causer_id');
+    }
 }

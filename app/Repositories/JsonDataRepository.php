@@ -23,7 +23,9 @@ class JsonDataRepository implements JsonDataRepositoryInterface
 
     public function updateJsonData($data, $code)
     {
-        current_user()->jsonData()->where(['code' => $code])->update($data);
+        $jsonData = current_user()->jsonData()->where(['code' => $code])->first();
+        $jsonData->data = $data['data'];
+        $jsonData->save();
     }
 
     public function destroyJsonData($code)

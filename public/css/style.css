@@ -31,7 +31,6 @@ table td {
 }
 
 #tabs .tabs-content {
-    max-width: 800px;
     min-height: 650px;
     padding: 50px;
     margin: 0 auto;
@@ -49,7 +48,7 @@ table td {
 
 #tabs .tab-items {
     display: grid;
-    grid-template-columns: repeat(5,1fr);
+    grid-template-columns: repeat(6,1fr);
 }
 #tabs .tab-item {
     margin: 0 0 -1px;

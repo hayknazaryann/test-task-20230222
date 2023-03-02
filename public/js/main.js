@@ -1,6 +1,6 @@
-$.ajaxSetup({
-
-});
+window.onpopstate = function () {
+    history.go(0);
+};
 
 $(document)
     .on('change', '.tabCheckbox', function () {
@@ -17,7 +17,8 @@ $(document)
             form = btn.closest('form');
         saveData(form);
     })
-    .on('click', '.tab-item.clickable label', function () {
+    .on('click', '.tab-item.clickable label', function (e) {
+        e.preventDefault();
         if (!$(this).hasClass('active')) {
             $(this).prev().trigger('change');
         }
@@ -65,9 +66,8 @@ function saveData(form) {
         data: reqData,
     }).done( response => {
         if (response.success === true) {
+            console.log('ddd');
             $('#tab-data').trigger('click');
-        } else {
-
         }
 
     }).fail(function (response) {
