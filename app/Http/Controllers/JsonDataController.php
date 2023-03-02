@@ -26,7 +26,7 @@ class JsonDataController extends Controller
     public function index()
     {
         $jsonData = $this->jsonDataRepository->allJsonData();
-        $view = view('json.table', compact('jsonData'))->render();
+        $view = view('json.partials.table', compact('jsonData'))->render();
         if (\request()->ajax()) {
             return $view;
         }

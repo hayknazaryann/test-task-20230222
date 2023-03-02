@@ -28,8 +28,8 @@
                                 <input id="tab-profile" class="tabCheckbox" type="radio" name="tabs" value="profile" data-url="{{ route('profile') }}" {{ request()->segment(1) == \App\Enums\Actions::PROFILE ? 'checked' : '' }}>
                                 <label for="tab-profile">{{ __('Profile') }}</label>
                             </div>
-                            <div class="tab-item clickable {{ request()->segment(1) == \App\Enums\Actions::LOGS ? 'active' : '' }}">
-                                <input id="tab-logs" class="tabCheckbox" type="radio" name="tabs" value="logs" data-url="{{ route('json.logs') }}" {{ request()->segment(1) == \App\Enums\Actions::LOGS ? 'checked' : '' }}>
+                            <div class="tab-item clickable {{ request()->segment(2) == \App\Enums\Actions::LOGS ? 'active' : '' }}">
+                                <input id="tab-logs" class="tabCheckbox" type="radio" name="tabs" value="logs" data-url="{{ route('json.logs') }}" {{ request()->segment(2) == \App\Enums\Actions::LOGS ? 'checked' : '' }}>
                                 <label for="tab-logs">{{ __('Logs') }}</label>
                             </div>
                         </div>

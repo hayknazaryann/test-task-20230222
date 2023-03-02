@@ -28,5 +28,5 @@
 
         </tbody>
     </table>
-    {!! $logs->links('json.partials.pagination') !!}
 </div>
+{!! $logs->links('json.partials.pagination') !!}

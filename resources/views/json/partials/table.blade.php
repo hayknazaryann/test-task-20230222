@@ -42,5 +42,5 @@
 
         </tbody>
     </table>
-    {!! $jsonData->links('json.partials.pagination') !!}
 </div>
+{!! $jsonData->links('json.partials.pagination') !!}

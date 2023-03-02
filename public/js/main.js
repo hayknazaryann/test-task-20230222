@@ -41,7 +41,24 @@ $(document)
     })
     .on('click', '#logout-btn', function () {
         $('form#logout-form').submit();
+    })
+    .on('click', '.pagination a.page-link', function (event) {
+        event.preventDefault();
+        var page = $(this).attr('href').split('page=')[1];
+        fetch_data(page);
     });
+
+
+function fetch_data(page)
+{
+    $.ajax({
+        url:"?page="+page,
+        success:function(data)
+        {
+            $('#content').html(data);
+        }
+    });
+}
 
 function saveData(form) {
     let method = form.find('select#method').val(),
