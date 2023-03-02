@@ -7,6 +7,7 @@ use App\Models\ActivityLog;
 use App\Models\JsonData;
 use App\Repositories\Interfaces\JsonDataRepositoryInterface;
 use Illuminate\Http\Request;
+use Mockery\Exception;
 
 class JsonDataController extends Controller
 {
@@ -40,25 +41,31 @@ class JsonDataController extends Controller
      */
     public function create(Request $request)
     {
-        $action = Actions::CREATE;
-        $view = view('json.form', compact('action'));
-        if ($request->ajax()) {
-            if ($request->loadContent) {
-                return $view->render();
+        try {
+            $action = Actions::CREATE;
+            $view = view('json.form', compact('action'));
+            if ($request->ajax()) {
+                if ($request->loadContent) {
+                    return $view->render();
+                }
+                $token = \request()->header('USER-TOKEN');
+                if (!$token) {
+                    return response()->json(['success' => false, 'message' => 'Token required'], 400);
+                }
+                if(!current_user()->tokenExpired($token)) {
+                    $this->jsonDataRepository->storeJsonData(['data' => json_decode($request->data, true), 'code' => generate_code()]);
+                    return response()->json(['success' => true, 'message' => 'Data successfully created'], 200);
+                }
+                return response()->json(['success' => false, 'message' => 'Token expired'], 401);
             }
-            $token = \request()->header('USER-TOKEN');
-            if (!$token) {
-                return response()->json(['success' => false, 'message' => 'Token required'], 400);
+            return view('json.index', compact('view'));
+        } catch (Exception $exception) {
+            if ($request->ajax()) {
+                return response()->json(['success' => false, 'message' => 'Something went wrong'], 400);
             }
-
-            if(!current_user()->tokenExpired($token)) {
-                $this->jsonDataRepository->storeJsonData(['data' => json_decode($request->data, true), 'code' => generate_code()]);
-                return response()->json(['success' => true, 'message' => 'Data successfully created'], 200);
-            }
-
-            return response()->json(['success' => false, 'message' => 'Token expired'], 401);
+            return redirect()->back()->with('error', 'Something went wrong');
         }
-        return view('json.index', compact('view'));
+
     }
 
 
@@ -69,22 +76,30 @@ class JsonDataController extends Controller
      */
     public function update(Request $request)
     {
-        $action = Actions::UPDATE;
-        $view = view('json.form', compact('action'));
-        if ($request->ajax()) {
-            if ($request->loadContent) {
-                return $view->render();
+        try {
+            $action = Actions::UPDATE;
+            $view = view('json.form', compact('action'));
+            if ($request->ajax()) {
+                if ($request->loadContent) {
+                    return $view->render();
+                }
+                $token = \request()->header('USER-TOKEN');
+                if (!$token) {
+                    return response()->json(['success' => false, 'message' => 'Token required'], 400);
+                }
+                if(!current_user()->tokenExpired($token)) {
+                    $this->jsonDataRepository->updateJsonData(['data' => json_decode($request->data, true)], $request->code);
+                    return response()->json(['success' => true, 'message' => 'Data successfully updated'], 200);
+                }
             }
-            $token = \request()->header('USER-TOKEN');
-            if (!$token) {
-                return response()->json(['success' => false, 'message' => 'Token required'], 400);
+            return view('json.index', compact('view'));
+        } catch (Exception $exception) {
+            if ($request->ajax()) {
+                return response()->json(['success' => false, 'message' => 'Something went wrong'], 400);
             }
-            if(!current_user()->tokenExpired($token)) {
-                $this->jsonDataRepository->updateJsonData(['data' => json_decode($request->data, true)], $request->code);
-                return response()->json(['success' => true, 'message' => 'Data successfully updated'], 200);
-            }
+            return redirect()->back()->with('error', 'Something went wrong');
         }
-        return view('json.index', compact('view'));
+
     }
 
     /**
@@ -119,12 +134,13 @@ class JsonDataController extends Controller
      */
     public function destroy($code)
     {
-        $jsonData = JsonData::where(['code' => $code])->first();
-        if (!$jsonData) {
-            return response()->json(['success' => false, 'Data not found']);
+        try {
+            $this->jsonDataRepository->destroyJsonData($code);
+            return redirect()->back()->with('success', 'Data deleted successfully');
+        } catch (Exception $exception) {
+            return redirect()->back()->with('error', 'Something went wrong');
         }
-        $this->jsonDataRepository->destroyJsonData($jsonData->code);
-        return redirect()->back()->with('success', 'Data deleted successfully');
+
     }
 
     public function logs()

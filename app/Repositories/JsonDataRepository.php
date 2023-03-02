@@ -30,6 +30,7 @@ class JsonDataRepository implements JsonDataRepositoryInterface
 
     public function destroyJsonData($code)
     {
-        current_user()->jsonData()->where(['code' => $code])->delete();
+        $jsonData = current_user()->jsonData()->where(['code' => $code])->first();
+        $jsonData->delete();
     }
 }

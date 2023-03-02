@@ -30,5 +30,5 @@ Route::group(['middleware' => 'auth'], function () {
 
 
     Route::get('profile', [HomeController::class, 'profile'])->name('profile');
-    Route::get('work-plan', [HomeController::class, 'workPlan']);
+    Route::get('workflow', [HomeController::class, 'workflow']);
 });

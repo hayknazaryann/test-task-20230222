@@ -16,57 +16,75 @@ class HomeController extends Controller
         return view('json.index', compact('view'));
     }
 
-    public function workPlan()
+    public function workflow()
     {
         $tasks = [
             [
-                'task' => 'Настройка окружения',
-                'estimate' => '30 минут',
-                'logged' => '20 минут',
-                'comments' => 'Установка Xampp с PHP 8'
+                'task' => 'Setting up of the environment',
+                'estimate' => '30 minutes',
+                'logged' => '20 minutes',
+                'comments' => 'Install Xampp with PHP 8'
             ],
             [
-                'task' => 'Установка фреймворка',
-                'estimate' => '20 минут',
-                'logged' => '15 минут',
+                'task' => 'Install Laravel Framework',
+                'estimate' => '20 minutes',
+                'logged' => '15 minutes',
                 'comments' => ''
             ],
             [
-                'task' => 'Создание пользователей через сидер',
-                'estimate' => '15 минут',
-                'logged' => '15 минут',
+                'task' => 'Generate users with seeders',
+                'estimate' => '15 minutes',
+                'logged' => '15 minutes',
                 'comments' => ''
             ],
             [
-                'task' => 'Создание комманды для генерации токена',
-                'estimate' => '3 часа',
-                'logged' => '3 часа',
+                'task' => 'Create command for the token generation',
+                'estimate' => '3 hours',
+                'logged' => '3 hours',
                 'comments' => ''
             ],
             [
-                'task' => 'Логин',
-                'estimate' => '40 минут',
-                'logged' => '40 минут',
+                'task' => 'Login',
+                'estimate' => '40 minutes',
+                'logged' => '40 minutes',
                 'comments' => ''
             ],
             [
                 'task' => 'CRUD',
-                'estimate' => '3 часа',
-                'logged' => '3 часа 40 минут',
-                'comments' => 'Основная страница, форма для создания и обновления'
+                'estimate' => '3 hours',
+                'logged' => '3 hours 40 minutes',
+                'comments' => 'Home page, create and update forms'
             ],
             [
                 'task' => 'CRUD',
-                'estimate' => '10 часа',
-                'logged' => '11 часа',
-                'comments' => 'Создание, обновление, просмотр, все данные, удаление'
+                'estimate' => '10 hours',
+                'logged' => '11 hours',
+                'comments' => 'Create, Update, Read, All data, Delete'
             ],
             [
-                'task' => 'Unit тесты',
-                'estimate' => '2 часа',
-                'logged' => '4 часа',
-                'comments' => 'В первый раз пишу'
+                'task' => 'Unit tests',
+                'estimate' => '2 hours',
+                'logged' => '4 hours',
+                'comments' => 'I am writing Unit tests for the first time'
             ],
+            [
+                'task' => 'Rate limit',
+                'estimate' => '1 hour',
+                'logged' => '1 hour',
+                'comments' => ''
+            ],
+            [
+                'task' => 'Logs',
+                'estimate' => '2 hours',
+                'logged' => '2 hours',
+                'comments' => ''
+            ],
+            [
+                'task' => 'Other',
+                'estimate' => '',
+                'logged' => '2-4 hours',
+                'comments' => 'Code refactoring'
+            ]
         ];
         return view('work-plan', compact('tasks'));
     }

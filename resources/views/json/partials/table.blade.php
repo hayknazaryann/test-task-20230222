@@ -3,7 +3,6 @@
         <thead>
         <tr>
             <th scope="col" width="20%">{{ __('Code') }}</th>
-            <th scope="col" width="60%">{{ __('Data') }}</th>
             <th scope="col" width="20%" class="text-center">{{ __('Actions') }}</th>
         </tr>
         </thead>
@@ -11,7 +10,6 @@
         @forelse($jsonData as $jsonItem)
             <tr>
                 <td>{{ $jsonItem->code }}</td>
-                <td>{{ json_encode($jsonItem->data) }}</td>
                 <td align="center">
                     <a class="btn btn-sm btn-outline-success view-data"
                        data-url="{{route('json.show', $jsonItem->code)}}"

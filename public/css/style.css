@@ -107,23 +107,23 @@ table td {
     font-weight: 600;
 }
 
-.table-responsive {
+#content .table-responsive {
     height: 500px;
     overflow-y: scroll;
 }
 
-.table-responsive::-webkit-scrollbar {
+#content .table-responsive::-webkit-scrollbar {
     width: 8px;
 }
 
-.table-responsive::-webkit-scrollbar-track {
+#content .table-responsive::-webkit-scrollbar-track {
     background: #f1f1f1;
 }
 
-.table-responsive::-webkit-scrollbar-thumb {
+#content .table-responsive::-webkit-scrollbar-thumb {
     background: #888;
 }
 
-.table-responsive::-webkit-scrollbar-thumb:hover {
+#content .table-responsive::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
