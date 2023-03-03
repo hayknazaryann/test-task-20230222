@@ -4,12 +4,8 @@ window.onpopstate = function () {
 
 $(document)
     .on('change', '.tabCheckbox', function () {
-        let elm = $(this),
-            url = elm.data('url');
-
-        console.log('w');
-        elm.closest('.tab-item').addClass('active').siblings().removeClass('active');
-        loadContent(url);
+        let elm = $(this);
+        loadContent(elm);
     })
     .on('click', '#save', function (e) {
         e.preventDefault();
@@ -46,6 +42,23 @@ $(document)
         event.preventDefault();
         var page = $(this).attr('href').split('page=')[1];
         fetch_data(page);
+    })
+    .on('click', '#generate-token', function (e) {
+        e.preventDefault();
+        let form = $(this).closest('form');
+        $.ajax({
+            method: "POST",
+            url: form.attr('action'),
+            data: form.serialize(),
+        }).done( response => {
+            $('#output').html(response.output);
+        }).fail(function (error) {
+            let response = JSON.parse(error.responseText);
+            notif({
+                msg: response.message,
+                type: "error"
+            });
+        });
     });
 
 
@@ -83,16 +96,35 @@ function saveData(form) {
         data: reqData,
     }).done( response => {
         if (response.success === true) {
-            console.log('ddd');
-            $('#tab-data').trigger('click');
+            notif({
+                msg: response.message,
+                type: "success"
+            });
+            loadContent($('#tab-data'));
         }
 
-    }).fail(function (response) {
+    }).fail(function (error) {
+        let response = JSON.parse(error.responseText);
 
+        if(error.status === 422) {
+            let errors = response.errors;
+            for (let key in errors) {
+                notif({
+                    msg: errors[key][0],
+                    type: "error"
+                });
+            }
+        } else {
+            notif({
+                msg: response.message,
+                type: "error"
+            });
+        }
     });
 }
 
-function loadContent(url) {
+function loadContent(elm) {
+    let url = elm.data('url');
     $.ajax({
         method: "GET",
         url: url,
@@ -100,6 +132,7 @@ function loadContent(url) {
             loadContent: true
         },
     }).done( response => {
+        elm.closest('.tab-item').addClass('active').siblings().removeClass('active');
         $('#content').html(response);
         history.pushState(null, null, url);
     }).fail(function (response) {

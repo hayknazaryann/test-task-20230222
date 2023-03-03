@@ -8,5 +8,20 @@
         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
             @csrf
         </form>
+        <div class="d-flex">
+            <form id="generate-token-form" class="mt-3" action="{{ route('generate.token') }}" method="POST">
+                @csrf
+                <div class="form-group">
+                    <input type="password" name="password" class="form-control" placeholder="Password">
+                </div>
+                <div class="form-group mt-2 text-center">
+                    <button type="button" class="btn1 btn-dark" id="generate-token">{{ __('Generate Token') }}</button>
+                </div>
+
+            </form>
+
+        </div>
+        <div class="mt-2 text-success" id="output">
+        </div>
     </div>
 </div>

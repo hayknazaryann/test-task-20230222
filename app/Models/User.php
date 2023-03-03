@@ -46,7 +46,7 @@ class User extends Authenticatable
     public function tokenExpired($token)
     {
         $token = $this->tokens()->where(['token' => $token])->first();
-        if (Carbon::parse($token->expires_at) < Carbon::now()) {
+        if ($token && Carbon::parse($token->expires_at) < Carbon::now()) {
             return true;
         }
         return false;

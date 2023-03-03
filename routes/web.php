@@ -30,5 +30,6 @@ Route::group(['middleware' => 'auth'], function () {
 
 
     Route::get('profile', [HomeController::class, 'profile'])->name('profile');
+    Route::post('generate/token', [HomeController::class, 'generateToken'])->middleware('throttle:generate_token')->name('generate.token');
     Route::get('workflow', [HomeController::class, 'workflow']);
 });

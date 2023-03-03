@@ -33,26 +33,30 @@ class GenerateToken extends Command
         $userName = $this->option('username');
         $password = $this->option('password');
         if (!$userName || !$password) {
-            $this->error("Username and Password required");
+            $this->error("Username and Password required.");
+            return Command::FAILURE;
         }
 
         $user = User::where(['username' => $userName])->first();
         if (!$user) {
-            $this->error("Wrong Username");
+            $this->error("Wrong Username.");
             return Command::FAILURE;
         }
 
         if (!Hash::check($password, $user->password)) {
-            $this->error("Wrong Password");
+            $this->error("Wrong Password.");
             return Command::FAILURE;
         }
 
-        $user->tokens()->delete();
+        $exist = $user->tokens()->first();
+
+        if ($exist) {
+            $exist->delete();
+        }
+
         $token = $user->createToken('auth_token', ['*'], Carbon::now()->addMinutes(5));
         if (isset($token->accessToken) && !is_null($token->accessToken)) {
-            $this->info("Token generated successfully");
-            $this->info("Your token is: " . $token->accessToken->token);
-            $this->info("Expires At: " . $token->accessToken->expires_at . ' ' . date_default_timezone_get());
+            $this->info("Token generated successfully. " . PHP_EOL . "Your token is: " . $token->accessToken->token . PHP_EOL . " Expires At: " . $token->accessToken->expires_at . ' ' . date_default_timezone_get());
             return Command::SUCCESS;
         }
         return Command::FAILURE;

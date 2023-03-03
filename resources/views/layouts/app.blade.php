@@ -16,13 +16,16 @@
     <link href="{{ asset('vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
 
     <!-- Styles -->
+    <link href="{{ asset('vendor/notifIt/css/notifIt.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
     <!-- Jquery -->
     <script src="{{ asset('vendor/jquery/jquery.min.js') }}" type="text/javascript"></script>
 
     <!-- Scripts -->
+    <script src="{{ asset('vendor/notifIt/js/notifIt.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/main.js') }}" type="text/javascript"></script>
+
 <body>
     <main role="main">
         @yield('content')

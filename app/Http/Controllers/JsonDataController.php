@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Enums\Actions;
-use App\Models\ActivityLog;
+use App\Http\Requests\Json\StoreRequest;
+use App\Http\Requests\Json\UpdateRequest;
 use App\Models\JsonData;
 use App\Repositories\Interfaces\JsonDataRepositoryInterface;
 use Illuminate\Http\Request;
@@ -53,6 +54,7 @@ class JsonDataController extends Controller
                     return response()->json(['success' => false, 'message' => 'Token required'], 400);
                 }
                 if(!current_user()->tokenExpired($token)) {
+                    $request->validate(['data' => 'required|json']);
                     $this->jsonDataRepository->storeJsonData(['data' => json_decode($request->data, true), 'code' => generate_code()]);
                     return response()->json(['success' => true, 'message' => 'Data successfully created'], 200);
                 }
@@ -88,9 +90,14 @@ class JsonDataController extends Controller
                     return response()->json(['success' => false, 'message' => 'Token required'], 400);
                 }
                 if(!current_user()->tokenExpired($token)) {
-                    $this->jsonDataRepository->updateJsonData(['data' => json_decode($request->data, true)], $request->code);
-                    return response()->json(['success' => true, 'message' => 'Data successfully updated'], 200);
+                    $request->validate(['code' => 'required|string','data' => 'required|json']);
+                    $updated = $this->jsonDataRepository->updateJsonData(['data' => json_decode($request->data, true)], $request->code);
+                    if ($updated) {
+                        return response()->json(['success' => true, 'message' => 'Data successfully updated'], 200);
+                    }
+                    return response()->json(['success' => false, 'message' => 'Data not found'], 404);
                 }
+                return response()->json(['success' => false, 'message' => 'Token expired'], 401);
             }
             return view('json.index', compact('view'));
         } catch (Exception $exception) {

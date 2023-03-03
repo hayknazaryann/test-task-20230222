@@ -8,7 +8,7 @@ class JsonDataRepository implements JsonDataRepositoryInterface
 {
     public function allJsonData()
     {
-        return current_user()->jsonData()->paginate(5);
+        return current_user()->jsonData()->paginate(10);
     }
 
     public function storeJsonData($data)
@@ -24,8 +24,11 @@ class JsonDataRepository implements JsonDataRepositoryInterface
     public function updateJsonData($data, $code)
     {
         $jsonData = current_user()->jsonData()->where(['code' => $code])->first();
-        $jsonData->data = $data['data'];
-        $jsonData->save();
+        if ($jsonData) {
+            $jsonData->data = $data['data'];
+            return $jsonData->save();
+        }
+        return false;
     }
 
     public function destroyJsonData($code)

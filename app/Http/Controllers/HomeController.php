@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 
 class HomeController extends Controller
 {
@@ -14,6 +15,13 @@ class HomeController extends Controller
             return $view;
         }
         return view('json.index', compact('view'));
+    }
+
+    public function generateToken(Request $request)
+    {
+        Artisan::call('generate:token --username=' . auth()->user()->username . ' --password=' . $request->password);
+
+        return response()->json(['output' => nl2br(Artisan::output())]);
     }
 
     public function workflow()
