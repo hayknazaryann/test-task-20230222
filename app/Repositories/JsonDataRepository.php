@@ -8,7 +8,7 @@ class JsonDataRepository implements JsonDataRepositoryInterface
 {
     public function allJsonData()
     {
-        return current_user()->jsonData()->paginate(2);
+        return current_user()->jsonData()->paginate(10);
     }
 
     public function storeJsonData($data)
