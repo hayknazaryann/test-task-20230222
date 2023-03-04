@@ -3,13 +3,13 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="table-responsive col-md-8">
-                <table class="table table-striped table-primary table-sm">
+                <table class="table table-striped table-bordered table-light">
                     <thead>
                     <tr>
-                        <th scope="col">{{ __('Задача') }}</th>
-                        <th scope="col">{{ __('Оценка') }}</th>
-                        <th scope="col">{{ __('Затрачено') }}</th>
-                        <th scope="col">{{ __('Комментарий') }}</th>
+                        <th scope="col">{{ __('Task') }}</th>
+                        <th scope="col">{{ __('Estimate') }}</th>
+                        <th scope="col">{{ __('Logged') }}</th>
+                        <th scope="col">{{ __('Comments') }}</th>
                     </tr>
                     </thead>
                     <tbody>

@@ -88,11 +88,23 @@ class HomeController extends Controller
                 'comments' => ''
             ],
             [
-                'task' => 'Other',
+                'task' => 'Code refactoring',
                 'estimate' => '',
                 'logged' => '2-4 hours',
-                'comments' => 'Code refactoring'
-            ]
+                'comments' => ''
+            ],
+            [
+                'task' => 'Add generate token from profile',
+                'estimate' => '',
+                'logged' => '1 hour',
+                'comments' => ''
+            ],
+            [
+                'task' => 'Fix update logic',
+                'estimate' => '',
+                'logged' => '2 hours',
+                'comments' => ''
+            ],
         ];
         return view('work-plan', compact('tasks'));
     }
