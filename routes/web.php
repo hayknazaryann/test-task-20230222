@@ -23,8 +23,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::prefix('json')->name('json.')->group(function () {
         Route::match(['GET', 'POST'],'create', [JsonDataController::class, 'create'])->middleware('throttle:create')->name('create');
         Route::match(['GET', 'POST'],'update', [JsonDataController::class, 'update'])->middleware('throttle:update')->name('update');
-        Route::get('show/{code}', [JsonDataController::class, 'show'])->name('show');
-        Route::delete('delete/{code}', [JsonDataController::class, 'destroy'])->middleware('throttle:delete')->name('destroy');
+        Route::get('show/{uuid}', [JsonDataController::class, 'show'])->name('show');
+        Route::delete('delete/{uuid}', [JsonDataController::class, 'destroy'])->middleware('throttle:delete')->name('destroy');
         Route::get('logs', [JsonDataController::class, 'logs'])->name('logs');
     });
 

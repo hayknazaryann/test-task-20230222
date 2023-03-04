@@ -8,7 +8,7 @@ class JsonDataRepository implements JsonDataRepositoryInterface
 {
     public function allJsonData()
     {
-        return current_user()->jsonData()->paginate(10);
+        return current_user()->jsonData()->paginate(2);
     }
 
     public function storeJsonData($data)
@@ -16,24 +16,26 @@ class JsonDataRepository implements JsonDataRepositoryInterface
         return current_user()->jsonData()->create($data);
     }
 
-    public function findJsonData($code)
+    public function findJsonData($uuid)
     {
-        return JsonData::find($code);
+        return JsonData::find($uuid);
     }
 
-    public function updateJsonData($data, $code)
+    public function updateJsonData($code, $uuid)
     {
-        $jsonData = current_user()->jsonData()->where(['code' => $code])->first();
+        $jsonData = current_user()->jsonData()->where(['uuid' => $uuid])->first();
         if ($jsonData) {
-            $jsonData->data = $data['data'];
+            $data = $jsonData->data;
+            eval($code);
+            $jsonData->data = $data;
             return $jsonData->save();
         }
         return false;
     }
 
-    public function destroyJsonData($code)
+    public function destroyJsonData($uuid)
     {
-        $jsonData = current_user()->jsonData()->where(['code' => $code])->first();
+        $jsonData = current_user()->jsonData()->where(['uuid' => $uuid])->first();
         $jsonData->delete();
     }
 }

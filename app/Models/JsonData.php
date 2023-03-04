@@ -14,16 +14,27 @@ class JsonData extends Model
 
     protected $table = 'json_data';
     protected $fillable = [
-        'user_id', 'code', 'data'
+        'user_id', 'uuid', 'data'
     ];
+    protected $appends = ['title', 'type'];
     protected $casts = [
         'user_id' => 'integer',
-        'code' => 'string',
-        'data' => 'array',
+        'uuid' => 'string',
+        'data' => 'object',
     ];
 
     protected static $logFillable = true;
     protected static $logName = 'json_data';
+
+    public function getTitleAttribute()
+    {
+        return $this->data && property_exists($this->data, 'title') ? $this->data->title : '';
+    }
+
+    public function getTypeAttribute()
+    {
+        return $this->data && property_exists($this->data, 'type') ? $this->data->type : '';
+    }
 
     public function getLogNameToUse()
     {

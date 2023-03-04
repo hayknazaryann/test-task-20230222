@@ -78,7 +78,7 @@ class JsonDataTest extends TestCase
             "title" => "Main title",
             "type" => "Main type",
             "items" => [
-                "item 1" => [
+                [
                     "title" => "Item 1 title",
                     "type" => "Item 1 type",
                     "items" => [
@@ -91,6 +91,10 @@ class JsonDataTest extends TestCase
                             "type" => "Item 1-2 type"
                         ]
                     ]
+                ],
+                [
+                    "title" => "Item 2 title",
+                    "type" => "Item 2 type",
                 ]
             ]
         ];

@@ -19,14 +19,16 @@
 
                     @if($action == \App\Enums\Actions::UPDATE)
                         <div class="form-row-item form-floating">
-                            <input type="text" class="form-control" name="code" id="code" placeholder="Code">
-                            <label for="code">Code</label>
+                            <input type="text" class="form-control" name="uuid" id="uuid" placeholder="UUID">
+                            <label for="code">UUID</label>
                         </div>
                     @endif
 
                     <div class="form-row-item form-floating">
-                        <textarea name="data" class="form-control" id="data" rows="20" placeholder="Data"></textarea>
-                        <label for="data">Data</label>
+                        <textarea name="{{ $action == \App\Enums\Actions::CREATE ? 'data' : 'code' }}" class="form-control"
+                                  id="{{ $action == \App\Enums\Actions::CREATE ? 'data' : 'code' }}"
+                                  rows="20" placeholder="{{ $action == \App\Enums\Actions::CREATE ? 'Data' : 'Code' }}"></textarea>
+                        <label for="data">{{ $action == \App\Enums\Actions::CREATE ? 'Data' : 'Code' }}</label>
                     </div>
                     <div class="form-row-item">
                         <button type="button" id="save" class="btn btn-outline-primary text-uppercase">

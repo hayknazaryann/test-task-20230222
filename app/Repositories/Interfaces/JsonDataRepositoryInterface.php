@@ -7,7 +7,7 @@ Interface  JsonDataRepositoryInterface
 {
     public function allJsonData();
     public function storeJsonData($data);
-    public function findJsonData($code);
-    public function updateJsonData($data, $code);
-    public function destroyJsonData($code);
+    public function findJsonData($uuid);
+    public function updateJsonData($code, $uuid);
+    public function destroyJsonData($uuid);
 }

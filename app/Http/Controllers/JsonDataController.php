@@ -55,10 +55,10 @@ class JsonDataController extends Controller
                 }
                 if(!current_user()->tokenExpired($token)) {
                     $request->validate(['data' => 'required|json']);
-                    $this->jsonDataRepository->storeJsonData(['data' => json_decode($request->data, true), 'code' => generate_code()]);
+                    $this->jsonDataRepository->storeJsonData(['data' => json_decode($request->data, true), 'uuid' => generate_uuid()]);
                     return response()->json(['success' => true, 'message' => 'Data successfully created'], 200);
                 }
-                return response()->json(['success' => false, 'message' => 'Token expired'], 401);
+                return response()->json(['success' => false, 'message' => 'Token mismatch'], 401);
             }
             return view('json.index', compact('view'));
         } catch (Exception $exception) {
@@ -90,14 +90,14 @@ class JsonDataController extends Controller
                     return response()->json(['success' => false, 'message' => 'Token required'], 400);
                 }
                 if(!current_user()->tokenExpired($token)) {
-                    $request->validate(['code' => 'required|string','data' => 'required|json']);
-                    $updated = $this->jsonDataRepository->updateJsonData(['data' => json_decode($request->data, true)], $request->code);
+                    $request->validate(['uuid' => 'required|string','code' => 'required|string']);
+                    $updated = $this->jsonDataRepository->updateJsonData($request->code, $request->uuid);
                     if ($updated) {
                         return response()->json(['success' => true, 'message' => 'Data successfully updated'], 200);
                     }
                     return response()->json(['success' => false, 'message' => 'Data not found'], 404);
                 }
-                return response()->json(['success' => false, 'message' => 'Token expired'], 401);
+                return response()->json(['success' => false, 'message' => 'Token mismatch'], 401);
             }
             return view('json.index', compact('view'));
         } catch (Exception $exception) {
@@ -112,23 +112,26 @@ class JsonDataController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  string  $code
+     * @param  string  $uuid
      * @return \Illuminate\Http\Response
      */
-    public function show($code)
+    public function show($uuid)
     {
-        $jsonData = JsonData::where(['code' => $code])->first();
-        $view = view('json.show', compact('jsonData'));
-        if (\request()->ajax()) {
-            if (!$jsonData) {
+        $jsonData = JsonData::where(['uuid' => $uuid])->first();
+        if (!$jsonData) {
+            if (\request()->ajax()) {
                 return response()->json(['success' => false, 'message' => 'Data not found'], 404);
+            } else {
+                return redirect()->route('json.index')->with('error', 'Data not found');
             }
+        }
+
+        $data = json_decode(json_encode($jsonData->data), true);
+        $view = view('json.show', compact('data'));
+        if (\request()->ajax()) {
             return $view->render();
         }
 
-        if (!$jsonData) {
-            return redirect()->route('json.index')->with('error', 'Data not found');
-        }
         return view('json.index', compact('view'));
 
     }
@@ -136,13 +139,13 @@ class JsonDataController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  string  $code
+     * @param  string  $uuid
      * @return \Illuminate\Http\Response
      */
-    public function destroy($code)
+    public function destroy($uuid)
     {
         try {
-            $this->jsonDataRepository->destroyJsonData($code);
+            $this->jsonDataRepository->destroyJsonData($uuid);
             return redirect()->back()->with('success', 'Data deleted successfully');
         } catch (Exception $exception) {
             return redirect()->back()->with('error', 'Something went wrong');

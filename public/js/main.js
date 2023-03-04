@@ -31,9 +31,26 @@ $(document)
             elm.parent().find('ul').addClass('hide');
         }
     })
-    .on('click', '.btn-delete', function () {
-        confirm('Are you sure?');
-        $(this).parent('form').submit();
+    .on('click', '.btn-delete', function (e) {
+        if (confirm('Are you sure?')) {
+            e.preventDefault();
+            let form = $(this).parent('form');
+
+            $.ajax({
+                method: "POST",
+                url: form.attr('action'),
+                data: form.serialize(),
+            }).done( response => {
+                let page = $('.page-item.active').find('.page-link').text();
+                fetch_data(page)
+            }).fail(function (error) {
+                let response = JSON.parse(error.responseText);
+                notif({
+                    msg: response.message,
+                    type: "error"
+                });
+            });
+        }
     })
     .on('click', '#logout-btn', function () {
         $('form#logout-form').submit();
@@ -80,10 +97,11 @@ function saveData(form) {
         reqData = {
             data: form.find('textarea#data').val()
         },
-        inputCode = form.find('input#code');
+        inputCode = form.find('textarea#code');
 
     if (inputCode.length) {
         reqData.code = inputCode.val();
+        reqData.uuid = form.find('input#uuid').val();
     }
 
     $.ajax({
